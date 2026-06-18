@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import { CreateMetricDto } from '../models/dto/create-metric.dto';
-import { MetricsRepository } from 'src/repositories/metrics.repository';
-import { SensorsRepository } from 'src/repositories/sensors.repository';
+import type { IMetricsService } from '../ports/in/IMetricsService.interface';
+import type { IMetricsRepository } from '../ports/out/IMetricsRepository.interface';
+import type { ISensorRepository } from '../ports/out/ISensorRepository.interface';
 import {
   isAnomalousReading,
   calculateDewPoint,
@@ -13,12 +14,14 @@ import {
 } from 'src/algorithms/soil-and-tank-math';
 
 @Injectable()
-export class MetricsService {
+export class MetricsService implements IMetricsService {
   private readonly logger = new Logger(MetricsService.name);
 
   constructor(
-    private readonly metricsRepository: MetricsRepository,
-    private readonly sensorsRepository: SensorsRepository,
+    @Inject('IMetricsRepository')
+    private readonly metricsRepository: IMetricsRepository,
+    @Inject('ISensorRepository')
+    private readonly sensorsRepository: ISensorRepository,
   ) {}
 
   async registerMetrics(idDevice: string, dto: CreateMetricDto) {
@@ -28,7 +31,7 @@ export class MetricsService {
     );
 
     // Le decimos explícitamente al linter que confíe en que es un número
-
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const rawValue = latestData.length > 0 ? latestData[0].value : null;
     const lastTemp = rawValue !== null ? Number(rawValue) : null;
 
@@ -88,7 +91,7 @@ export class MetricsService {
     };
   }
 
-  async getLatestMetric(
+  async getLatestReadings(
     idDevice: string,
     sensorTypes: string[],
   ): Promise<any[]> {

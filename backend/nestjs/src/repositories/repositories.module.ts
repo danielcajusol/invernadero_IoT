@@ -9,7 +9,11 @@ import { Device } from 'src/models/entities/device.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Sensor, Metric, Device])],
-  providers: [SensorsRepository, MetricsRepository, DevicesRepository],
-  exports: [SensorsRepository, MetricsRepository, DevicesRepository],
+  providers: [
+    { provide: 'IMetricsRepository', useClass: MetricsRepository },
+    { provide: 'ISensorRepository', useClass: SensorsRepository },
+    DevicesRepository,
+  ],
+  exports: ['IMetricsRepository', 'ISensorRepository', DevicesRepository],
 })
 export class RepositoriesModule {}

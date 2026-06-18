@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SensorsService } from './sensors.service';
-import { SensorsRepository } from '../repositories/sensors.repository';
 import { CreateSensorDto } from '../models/dto/create-sensor.dto';
 
 describe('SensorsService', () => {
@@ -15,14 +14,17 @@ describe('SensorsService', () => {
       providers: [
         SensorsService,
         {
-          provide: SensorsRepository,
+          // CAMBIO 1: Usamos el string exacto que pusiste en el @Inject()
+          provide: 'ISensorRepository',
           useValue: mockSensorsRepository,
         },
       ],
     }).compile();
 
     service = module.get<SensorsService>(SensorsService);
-    repository = module.get<SensorsRepository>(SensorsRepository);
+
+    // CAMBIO 2: Para pedirle a NestJS el mock, también usamos el string
+    repository = module.get<typeof mockSensorsRepository>('ISensorRepository');
   });
 
   it('should be defined', () => {

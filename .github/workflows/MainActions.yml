@@ -1,0 +1,60 @@
+name: Main Actions
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  frontend-building:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Frontend Building
+        uses: ./.github/frontend/building
+
+  frontend-testing:
+    runs-on: ubuntu-latest
+
+    needs:
+      - frontend-building
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Frontend Testing
+        uses: ./.github/frontend/testing
+
+  firmware-building:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Firmware Building
+        uses: ./.github/firmware/building
+
+  firmware-testing:
+    runs-on: ubuntu-latest
+
+    needs:
+      - firmware-building
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Firmware Testing
+        uses: ./.github/firmware/testing
+        

@@ -13,7 +13,14 @@ import { Device } from 'src/models/entities/device.entity';
     RepositoriesModule,
     TypeOrmModule.forFeature([Sensor, Metric, Device]),
   ],
-  providers: [SensorsService, MetricsService, DevicesService],
-  exports: [SensorsService, MetricsService, DevicesService],
+  providers: [
+    SensorsService,
+    DevicesService,
+    {
+      provide: 'IMetricsService',
+      useClass: MetricsService,
+    },
+  ],
+  exports: [SensorsService, DevicesService, 'IMetricsService'],
 })
 export class ServicesModule {}

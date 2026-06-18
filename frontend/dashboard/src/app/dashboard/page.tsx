@@ -8,8 +8,7 @@
  */
 
 import { DashboardContainer } from "@/components/dashboard/DashboardContainer";
-import { mockHumidityData } from "@/app/dashboard/mock/mockHumidityData";
 
 export default function DashboardPage() {
-  return <DashboardContainer initialHistoryData={mockHumidityData} />;
+  return <DashboardContainer />;
 }

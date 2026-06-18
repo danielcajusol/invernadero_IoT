@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { SensorsRepository } from '../repositories/sensors.repository';
+import { Injectable, Inject } from '@nestjs/common';
+import type { ISensorRepository } from '../ports/out/ISensorRepository.interface';
 import { CreateSensorDto } from '../models/dto/create-sensor.dto';
 
 @Injectable()
 export class SensorsService {
-  constructor(private readonly sensorsRepository: SensorsRepository) {}
+  constructor(
+    @Inject('ISensorRepository')
+    private readonly sensorsRepository: ISensorRepository,
+  ) {}
   async create(dto: CreateSensorDto) {
     return this.sensorsRepository.save(dto);
   }

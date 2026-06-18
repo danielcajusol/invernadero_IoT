@@ -4,6 +4,6 @@ export interface IMetricsRepository {
   findHistoryMetrics(
     idDevice: string,
     sensorType: string,
-    timeframe: string,
+    timeframe?: string,
   ): Promise<any[]>;
 }

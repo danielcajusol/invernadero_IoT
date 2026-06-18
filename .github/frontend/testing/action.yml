@@ -1,0 +1,24 @@
+name: Frontend Testing
+
+description: Run frontend tests
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+        cache-dependency-path: frontend/dashboard/package-lock.json
+
+    - name: Install dependencies
+      shell: bash
+      working-directory: frontend/dashboard
+      run: npm ci --legacy-peer-deps
+
+    - name: Run tests
+      shell: bash
+      working-directory: frontend/dashboard
+      run: npm test 

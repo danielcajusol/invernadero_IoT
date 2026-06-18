@@ -8,13 +8,17 @@ import {
   Get,
   Query,
   BadRequestException,
+  Inject,
 } from '@nestjs/common';
-import { MetricsService } from '../services/metrics.service';
+import type { IMetricsService } from '../ports/in/IMetricsService.interface';
 import { CreateMetricDto } from '../models/dto/create-metric.dto';
 
 @Controller('metrics')
 export class MetricsController {
-  constructor(private readonly metricsService: MetricsService) {}
+  constructor(
+    @Inject('IMetricsService')
+    private readonly metricsService: IMetricsService,
+  ) {}
 
   @Post(':idDevice')
   @HttpCode(HttpStatus.CREATED)
@@ -44,7 +48,7 @@ export class MetricsController {
     // Convert comma-separated string into a clean array
     const sensorTypes = sensorType.split(',').map((type) => type.trim());
 
-    return this.metricsService.getLatestMetric(idDevice, sensorTypes);
+    return this.metricsService.getLatestReadings(idDevice, sensorTypes);
   }
 
   /**
