@@ -13,6 +13,11 @@ import {
   isTankLevelCritical,
 } from 'src/algorithms/soil-and-tank-math';
 
+interface MetricHistoryItem {
+  value: number;
+  date: Date;
+}
+
 @Injectable()
 export class MetricsService implements IMetricsService {
   private readonly logger = new Logger(MetricsService.name);
@@ -91,7 +96,7 @@ export class MetricsService implements IMetricsService {
     };
   }
 
-  async getLatestReadings(
+  async getLatestMetric(
     idDevice: string,
     sensorTypes: string[],
   ): Promise<any[]> {
@@ -106,11 +111,11 @@ export class MetricsService implements IMetricsService {
   async getHistoryBySensorType(
     idDevice: string,
     sensorType: string,
-  ): Promise<any[]> {
-    const history = await this.metricsRepository.findHistoryMetrics(
+  ): Promise<MetricHistoryItem[]> {
+    const history = (await this.metricsRepository.findHistoryMetrics(
       idDevice,
       sensorType,
-    );
+    )) as MetricHistoryItem[];
 
     if (history.length === 0) return [];
 

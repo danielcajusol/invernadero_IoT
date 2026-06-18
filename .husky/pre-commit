@@ -10,7 +10,10 @@ npm run lint
 cd ../..
 
 # 2. Frontend Linter
-
+echo "Linting Frontend..."
+cd frontend/dashboard
+npm run lint
+cd ../..
 
 # 3. Firmware Linter (PlatformIO)
 echo "Linting Firmware..."

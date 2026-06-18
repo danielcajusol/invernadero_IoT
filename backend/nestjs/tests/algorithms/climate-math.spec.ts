@@ -3,7 +3,7 @@ import {
   isAnomalousReading,
   calculateMovingAverage,
   calculateDewPoint,
-} from './climate-math';
+} from '../../src/algorithms/climate-math';
 
 describe('Algoritmos Climáticos Avanzados (RNF8)', () => {
   // ==========================================

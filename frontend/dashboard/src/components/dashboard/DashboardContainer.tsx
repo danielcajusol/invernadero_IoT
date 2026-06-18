@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, SimpleGrid, Heading, Stat, Text, Icon } from "@chakra-ui/react";
+import { Box, SimpleGrid, Heading, Stat, Text } from "@chakra-ui/react";
 import { HumidityChart } from "@/components/charts/HumidityChart";
 import { sensorType } from "@/types/main.types";
 import { useLatestMetrics } from "@/hooks/useLatestMetrics";

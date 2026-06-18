@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DevicesService } from './devices.service';
+import { DevicesService } from '../../src/services/devices.service';
 import { DevicesRepository } from 'src/repositories/device.repository';
 import { NotFoundException } from '@nestjs/common';
 

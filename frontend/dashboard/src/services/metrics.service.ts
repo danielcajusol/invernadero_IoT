@@ -9,7 +9,7 @@
  * - `getAlerts()` — fetch alert payloads for widgets
  */
 
-import { sensorType } from "@/types/main.types";
+import { Metric, sensorType } from "@/types/main.types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -20,7 +20,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 export const getLatestReadings = async (
   idDevice: string,
   sensorTypes: sensorType[],
-) => {
+): Promise<Metric[]> => {
   const typesQuery = sensorTypes.join(",");
   const response = await fetch(
     `${API_BASE_URL}/metrics/${idDevice}/latest?sensorType=${typesQuery}`,
@@ -29,7 +29,7 @@ export const getLatestReadings = async (
   if (!response.ok) {
     throw new Error(`Failed to fetch latest readings for device ${idDevice}`);
   }
-  return response.json();
+  return response.json() as Promise<Metric[]>;
 };
 
 /**
@@ -49,18 +49,18 @@ export const getReadingsBySensor = async (
       `Failed to fetch historical readings for sensor ${sensorType}`,
     );
   }
-  return response.json();
+  return response.json() as Promise<Metric[]>;
 };
 
 /**
  * FETCH ACTIVE ALERTS
  * (Implement this based on your backend alerts endpoint if available)
  */
-export const getAlerts = async (idDevice: string) => {
+export const getAlerts = async (idDevice: string): Promise<unknown[]> => {
   const response = await fetch(`${API_BASE_URL}/devices/${idDevice}/alerts`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch alerts for device ${idDevice}`);
   }
-  return response.json();
+  return response.json() as Promise<unknown[]>;
 };

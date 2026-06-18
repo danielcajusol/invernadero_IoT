@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SensorsService } from './sensors.service';
-import { CreateSensorDto } from '../models/dto/create-sensor.dto';
+import { SensorsService } from '../../src/services/sensors.service';
+import { CreateSensorDto } from '../../src/models/dto/create-sensor.dto';
 
 describe('SensorsService', () => {
   let service: SensorsService;

@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MetricsService } from './metrics.service';
+import { MetricsRepository } from '../repositories/metrics.repository';
+import { SensorsRepository } from '../repositories/sensors.repository';
 
 jest.mock('src/algorithms/climate-math', () => ({
-  isAnomalousReading: jest.fn().mockReturnValue(false),
+  isAnomalousReading: jest.fn().mockReturnValue(false), // default behavior
   calculateDewPoint: jest
     .fn()
     .mockReturnValue({ dewPoint: 14.2, status: 'NORMAL' }),
@@ -17,7 +19,6 @@ jest.mock('src/algorithms/soil-and-tank-math', () => ({
 describe('MetricsService', () => {
   let service: MetricsService;
 
-  // Creamos los mocks de los repositorios
   const mockMetricsRepository = {
     findLatestMetrics: jest.fn(),
     findHistoryMetrics: jest.fn(),
@@ -32,9 +33,8 @@ describe('MetricsService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MetricsService,
-        // Inyectamos los mocks usando los TOKENS de las interfaces
-        { provide: 'IMetricsRepository', useValue: mockMetricsRepository },
-        { provide: 'ISensorRepository', useValue: mockSensorsRepository },
+        { provide: MetricsRepository, useValue: mockMetricsRepository },
+        { provide: SensorsRepository, useValue: mockSensorsRepository },
       ],
     }).compile();
 
@@ -46,12 +46,12 @@ describe('MetricsService', () => {
     expect(service).toBeDefined();
   });
 
-  // Actualizamos el nombre del método a getLatestReadings
-  describe('getLatestReadings', () => {
+  describe('getLatestMetric', () => {
     it('should return an empty array instantly if no sensor types are requested', async () => {
-      const result = await service.getLatestReadings('device-123', []);
+      const result = await service.getLatestMetric('device-123', []);
 
       expect(result).toEqual([]);
+
       expect(mockMetricsRepository.findLatestMetrics).not.toHaveBeenCalled();
     });
 
@@ -59,7 +59,7 @@ describe('MetricsService', () => {
       const mockDbResult = [{ type: 'temp', value: 25 }];
       mockMetricsRepository.findLatestMetrics.mockResolvedValue(mockDbResult);
 
-      const result = await service.getLatestReadings('device-123', ['temp']);
+      const result = await service.getLatestMetric('device-123', ['temp']);
 
       expect(result).toEqual(mockDbResult);
       expect(mockMetricsRepository.findLatestMetrics).toHaveBeenCalledWith(

@@ -1,5 +1,12 @@
 // Define how the subscriber (Observer) callback function looks
-export type MetricsObserverCallback = (data: any[]) => void;
+
+export interface MetricItem {
+  value: number;
+  date: string | Date;
+}
+
+
+export type MetricsObserverCallback = (data: MetricItem[]) => void;
 
 class MetricsObservable {
   // Array of active observers (subscribers)
@@ -21,7 +28,7 @@ class MetricsObservable {
   /**
    * Method for the Subject to notify all active subscribers
    */
-  public notify(data: any[]): void {
+  public notify(data: MetricItem[]): void {
     this.observers.forEach((callback) => callback(data));
   }
 }

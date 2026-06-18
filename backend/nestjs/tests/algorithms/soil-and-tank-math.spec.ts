@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { clasificarSuelo, isTankLevelCritical } from './soil-and-tank-math';
+import { clasificarSuelo, isTankLevelCritical } from '../../src/algorithms/soil-and-tank-math';
 
 describe('Algoritmos de Suelo y Tanque (RNF8)', () => {
   // ==========================================

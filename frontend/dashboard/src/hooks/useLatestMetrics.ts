@@ -16,15 +16,15 @@ export const useLatestMetrics = (
   useEffect(() => {
     const fetchLatestData = async () => {
       try {
-        const data = await getLatestReadings(idDevice, sensorTypes);
+        const data = (await getLatestReadings(idDevice, sensorTypes)) as Metric[] ;
 
         setMetrics(data);
         setError(null);
 
         // Notify suscriptors (Observer)
         metricsObservable.notify(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error ocurred fetching latest metrics");
       } finally {
         setLoading(false);
       }

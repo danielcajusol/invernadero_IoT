@@ -3,11 +3,11 @@ import { HumidityChart } from "@/components/charts/HumidityChart";
 import { mockMetricsDatabase } from "../../mocks/mockMetricsDatabase";
 
 jest.mock("recharts", () => {
-  const original = jest.requireActual("recharts");
+  const original = jest.requireActual<Record<string, unknown>>("recharts");
 
   return {
     ...original,
-    ResponsiveContainer: ({ children }: any) => children,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => children,
   };
 });
 

@@ -14,8 +14,8 @@ export const useHistoryMetrics = (idDevice: string, sensorType: sensorType) => {
       const data = await getReadingsBySensor(idDevice, sensorType);
       setHistory(data);
       setError(null);
-    } catch (err: any) {
-      setError(err.message || "An error occurred fetching history");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred fetching history");
     } finally {
       setLoading(false);
     }
@@ -23,7 +23,11 @@ export const useHistoryMetrics = (idDevice: string, sensorType: sensorType) => {
 
   // 1. Initial historical data fetching via central service
   useEffect(() => {
-    fetchHistoryData();
+
+    const init = async () => {
+      await fetchHistoryData();
+    };
+    init();
   }, [idDevice, sensorType]);
 
   // 2. PURE OBSERVER PATTERN: Subscribe to real-time events via the shared Observable class

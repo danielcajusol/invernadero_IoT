@@ -48,7 +48,7 @@ export class MetricsController {
     // Convert comma-separated string into a clean array
     const sensorTypes = sensorType.split(',').map((type) => type.trim());
 
-    return this.metricsService.getLatestReadings(idDevice, sensorTypes);
+    return this.metricsService.getLatestMetric(idDevice, sensorTypes);
   }
 
   /**

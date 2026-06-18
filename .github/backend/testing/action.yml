@@ -1,0 +1,22 @@
+name: Backend Testing
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v5
+      with:
+        node-version: 22
+        cache: npm
+        cache-dependency-path: backend/nestjs/package-lock.json
+
+    - name: Install Dependencies
+      shell: bash
+      working-directory: backend/nestjs
+      run: npm ci
+
+    - name: Run Unit Tests
+      shell: bash
+      working-directory: backend/nestjs
+      run: npm test
