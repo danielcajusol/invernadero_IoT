@@ -52,7 +52,7 @@ export function DashboardContainer() {
                 {type[card.sensorType]}
               </Stat.Label>
               <Stat.ValueText fontSize="2xl" fontWeight="bold">
-                {card.value} {card.sensorType == "temp" ? "°C" : "%"}
+                {card.value.toFixed(2)} {card.sensorType == "temp" ? "°C" : "%"}
               </Stat.ValueText>
               <Stat.HelpText color="gray.400" fontSize="xs" mb={0}>
                 ESP32-INV-01
